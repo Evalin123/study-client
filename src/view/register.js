@@ -20,8 +20,8 @@ import axios from 'axios';
 
 const styles = (theme) => ({
   root: {
-    height: "90vh",
-    marginTop: "50px"
+    height: "80vh",
+    marginTop: "45px"
   },
   paper: {
     marginTop: "20px",
@@ -59,6 +59,8 @@ class Register extends Component {
     axios.post('http://localhost:5000/study/users/register', user)
       .then(response => {
         console.log(response);
+        alert("註冊成功");
+        this.props.history.push('/login');
       })
   }
 

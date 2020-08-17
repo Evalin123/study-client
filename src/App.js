@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Route, Link} from 'react-router-dom';
 
-import Home from './view/home/home';
+import Home from './view/home';
 
 class App extends Component {
   render() {

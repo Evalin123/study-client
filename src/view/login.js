@@ -7,17 +7,17 @@ import { CssBaseline } from '@material-ui/core';
 import { Avatar } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { Button } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-import axios from '../../utils/axios';
+import axios from '../utils/axios';
+import jwt_decode from 'jwt-decode';
 
-import FormComponent from '../../componant/form/form';
+import FormComponent from '../componant/form/form';
 
 const styles = (theme) => ({
   root: {
     height: "80vh",
-    marginTop: "60px"
+    marginTop: "45px"
   },
   paper: {
     marginTop: "20px",
@@ -65,6 +65,14 @@ class Login extends Component {
       .then(response => {
         console.log(response);
         localStorage.setItem("jwtToken", response.data.token);
+        const decoded = jwt_decode(response.data.token);
+        localStorage.setItem("user", JSON.stringify(decoded));
+        let userString = localStorage.getItem("user");
+        let user = JSON.parse(userString);
+        console.log(user);
+      })
+      .catch(err => {
+        alert("登入失敗");
       })
   }
 
@@ -88,15 +96,15 @@ class Login extends Component {
                 label={"Email"}
                 type={"email"}
                 variant={"outlined"}
-                onChange={(event) => {this.onEmailChange(event)}}
+                onChange={(event) => { this.onEmailChange(event) }}
               >
               </FormComponent>
               <FormComponent
                 name={"password"}
                 label={"Password"}
-                typpe={"password"}
+                type={"password"}
                 variant={"outlined"}
-                onChange={(event) => {this.onPasswordChange(event)}}
+                onChange={(event) => { this.onPasswordChange(event) }}
               >
               </FormComponent>
             </Grid>

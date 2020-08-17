@@ -10,7 +10,8 @@ import { TextField } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 
-import axios from '../../utils/axios';
+import axios from '../utils/axios';
+import jwt_decode from 'jwt-decode';
 
 const styles = (theme) => ({
   root: {
@@ -29,40 +30,59 @@ const styles = (theme) => ({
     display: "flex",
     flexDirection: "column",
   },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
   submit: {
+    width: "48%",
     height: "40px",
-    marginTop: "24px"
+    marginTop: "24px",
   }
 })
 
-class EditUnit extends Component {
+class ReadUnit extends Component {
   constructor(props) {
     super(props);
+    let userString = localStorage.getItem("user");
+    let user = JSON.parse(userString);
     this.state = {
       unit: {
         _id: "",
-        subject: "",
+        subjectId: "",
         title: "",
         subtitle: "",
         content: "",
-      }
+      },
+      subject: {
+        _id: "",
+        title: "",
+        description: "",
+      },
+      identity: user.identity,
     }
   }
 
   componentDidMount() {
-    const unitId = this.props.match.params.id;
+    const unitId = this.props.match.params.unitId;
     axios.get('http://localhost:5000/study/units/id/' + unitId)
-    .then(response => {
-      this.setState({unit: response.data});
-    })
+      .then(response => {
+        console.log(response.data);
+        this.setState({ unit: response.data.data.unit, subject: response.data.data.subject });
+      })
   }
 
-  editUnit(unit) {
-    axios.post('http://localhost:5000/study/units/edit/' + unit._id, unit)
-    .then(response => {
-      console.log(response.data);
-      this.setState({unit: response.data});
-    })
+  editUnit(id) {
+    this.props.history.push('/editUnit/' + id);
+  }
+
+  deleteUnit(id) {
+    axios.delete("http://localhost:5000/study/units/delete/" + id)
+      .then(response => {
+        console.log(response);
+        alert("已刪除");
+        this.props.history.push('/subject/' + this.state.subject._id);
+      })
   }
 
   render() {
@@ -75,32 +95,28 @@ class EditUnit extends Component {
             <EditIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Add one unit
+            Unit
           </Typography>
           <form className={classes.form}>
             <Grid container spacing={2}>
               <Grid container item xs={12} xm={12}>
                 <TextField
-                  value={this.state.unit.subject}
+                  value={this.state.subject.title}
                   name="subject"
                   id="subject"
                   label="Subject"
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  disabled
-                  required
+                  inputProps={{
+                    readOnly: true
+                  }}
                   fullWidth
                 >
                 </TextField>
               </Grid>
               <Grid container item xs={12} xm={12}>
                 <TextField
-                  onChange={event => {
-                    let unit = this.state.unit;
-                    unit.title = event.target.value;
-                    this.setState({ unit: unit });
-                  }}
                   value={this.state.unit.title}
                   name="title"
                   id="title"
@@ -108,18 +124,15 @@ class EditUnit extends Component {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  required
+                  inputProps={{
+                    readOnly: true
+                  }}
                   fullWidth
                 >
                 </TextField>
               </Grid>
               <Grid container item xs={12} xm={12}>
                 <TextField
-                  onChange={event => {
-                    let unit = this.state.unit;
-                    unit.subtitle = event.target.value;
-                    this.setState({ unit: unit });
-                  }}
                   value={this.state.unit.subtitle}
                   name="subtitle"
                   id="subtitle"
@@ -127,18 +140,15 @@ class EditUnit extends Component {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  required
+                  inputProps={{
+                    readOnly: true
+                  }}
                   fullWidth
                 >
                 </TextField>
               </Grid>
               <Grid container item xs={12} xm={12}>
                 <TextField
-                  onChange={(event) => {
-                    let unit = this.state.unit;
-                    unit.content = event.target.value;
-                    this.setState({ unit: unit });
-                  }}
                   value={this.state.unit.content}
                   name="content"
                   id="content"
@@ -149,21 +159,34 @@ class EditUnit extends Component {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  required
+                  inputProps={{
+                    readOnly: true
+                  }}
                   fullWidth
                 >
                 </TextField>
               </Grid>
             </Grid>
-            <Button
-              className={classes.submit}
-              onClick={() => { this.editUnit(this.state.unit) }}
-              color="primary"
-              variant="contained"
-              fullWidth
-            >
-              Submit
-            </Button>
+            {this.state.identity == 0 ?
+              <Grid className={classes.buttonContainer}>
+                <Button
+                  onClick={() => { this.editUnit(this.state.unit._id) }}
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={() => { this.deleteUnit(this.state.unit._id) }}
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Delete
+                </Button>
+              </Grid> : null
+            }
           </form>
         </div>
       </Container>
@@ -171,4 +194,4 @@ class EditUnit extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(EditUnit);
+export default withStyles(styles, { withTheme: true })(ReadUnit);

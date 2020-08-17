@@ -8,10 +8,11 @@ import { Avatar } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
 import { Button } from '@material-ui/core';
+import { TextareaAutosize } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 
-import axios from '../../utils/axios';
-import FormComponent from '../../componant/form/form';
+import axios from '../utils/axios';
+import FormComponent from '../componant/form/form';
 
 const styles = (theme) => ({
   root: {
@@ -41,11 +42,11 @@ class AddUnit extends Component {
     super(props);
     this.state = {
       unit: {
-        subject: "",
+        subjectId: props.match.subjectId,
         title: "",
         subtitle: "",
         content: "",
-      }
+      },
     }
   }
 
@@ -85,16 +86,18 @@ class AddUnit extends Component {
             <CreateIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Add one unit
+            Add unit
           </Typography>
           <form className={classes.form}>
             <Grid container spacing={2}>
               <FormComponent
-                name={"subject"}
-                label={"Subject"}
+                name={"subjectId"}
+                label={"SubjectId"}
                 type={"text"}
                 variant={"standard"}
-                onChange={(event) => { this.onSubjectChange(event) }}
+                inputProps={{
+                  readOnly: true
+                }}
               >
               </FormComponent>
               <FormComponent
