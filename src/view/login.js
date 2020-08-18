@@ -12,17 +12,18 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import axios from '../utils/axios';
 import jwt_decode from 'jwt-decode';
 
-import FormComponent from '../componant/form/form';
+import FormComponent from '../component/form/form';
 
 const styles = (theme) => ({
   root: {
     height: "80vh",
-    marginTop: "45px"
+    marginTop: "45px",
   },
   paper: {
     marginTop: "20px",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
   },
   avatar: {
@@ -63,13 +64,13 @@ class Login extends Component {
   logIn(user) {
     axios.post("http://localhost:5000/study/users/login", user)
       .then(response => {
-        console.log(response);
         localStorage.setItem("jwtToken", response.data.token);
         const decoded = jwt_decode(response.data.token);
         localStorage.setItem("user", JSON.stringify(decoded));
         let userString = localStorage.getItem("user");
         let user = JSON.parse(userString);
-        console.log(user);
+        alert("登入成功")
+        this.props.history.push('/subject');
       })
       .catch(err => {
         alert("登入失敗");

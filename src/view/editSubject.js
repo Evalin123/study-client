@@ -8,7 +8,6 @@ import { Avatar } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
 import { Button } from '@material-ui/core';
-import { TextareaAutosize } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 
 import axios from '../utils/axios';
@@ -16,7 +15,8 @@ import FormComponent from '../component/form/form';
 
 const styles = (theme) => ({
   root: {
-    height: "100vh",
+    height: "80vh",
+    marginTop: "45px"
   },
   paper: {
     marginTop: "20px",
@@ -32,40 +32,39 @@ const styles = (theme) => ({
     flexDirection: "column",
   },
   submit: {
-    height: "40px",
     marginTop: "24px"
   }
 })
 
-class AddUnit extends Component {
+class EditSubject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      unit: {
-        subjectId: props.match.params.subjectId,
+      subject: {
+        userId: "",
+        _id: "",
         title: "",
-        subtitle: "",
-        content: "",
+        description: "",
       },
     }
   }
 
-  onTitleChange(event) {
-    let unit = this.state.unit;
-    unit.title = event.target.value;
-    this.setState({ unit: unit });
-  }
-
-  onSubtitleChange(event) {
-    let unit = this.state.unit;
-    unit.subtitle = event.target.value;
-    this.setState({ unit: unit });
-  }
-
-  addUnit(unit) {
-    axios.post('http://localhost:5000/study/units/create', unit)
+  componentDidMount() {
+    const subjectId = this.props.match.params.subjectId;
+    axios.get('http://localhost:5000/study/subjects/get/' + subjectId)
       .then(response => {
+        this.setState({ subject: response.data })
         console.log(response);
+      })
+  }
+
+  editSubject(subject) {
+    axios.post('http://localhost:5000/study/subjects/edit/' + subject._id, subject)
+      .then(response => {
+        console.log(response.data);
+        this.setState({ subject: response.data.data });
+        alert("已編輯");
+        this.props.history.push('/subject');
       })
   }
 
@@ -73,57 +72,48 @@ class AddUnit extends Component {
     const { classes } = this.props;
 
     return (
-      <Container maxWidth="lg" component={Card} className={classes.root}>
+      <Container maxWidth="xs" component={Card} className={classes.root}>
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <CreateIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Add Unit
+            Edit Subject
           </Typography>
           <form className={classes.form}>
             <Grid container spacing={2}>
               <Grid container item xs={12} xm={12}>
                 <TextField
-                  name="subjectId"
-                  id="subjectId"
-                  label="Subject ID"
+                  onChange={(event) => {
+                    let subject = this.state.subject;
+                    subject.title = event.target.value;
+                    this.setState({ subject: subject });
+                  }}
+                  value={this.state.subject.title}
+                  name="title"
+                  id="title"
+                  label="Title"
                   variant="standard"
-                  value={this.state.unit.subjectId}
+                  required
                   fullWidth
                 >
                 </TextField>
               </Grid>
-              <FormComponent
-                name={"title"}
-                label={"Title"}
-                type={"text"}
-                variant={"standard"}
-                onChange={(event) => { this.onTitleChange(event) }}
-              >
-              </FormComponent>
-              <FormComponent
-                name={"subtitle"}
-                label={"Subtitle"}
-                type={"text"}
-                variant={"standard"}
-                onChange={(event) => { this.onSubtitleChange(event) }}
-              >
-              </FormComponent>
               <Grid container item xs={12} xm={12}>
                 <TextField
                   onChange={(event) => {
-                    let unit = this.state.unit;
-                    unit.content = event.target.value;
-                    this.setState({ unit: unit });
+                    let subject = this.state.subject;
+                    subject.description = event.target.value;
+                    this.setState({ subject: subject });
                   }}
-                  name="content"
-                  id="content"
-                  label="Content"
+                  name="description"
+                  id="description"
+                  label="Description"
                   variant="outlined"
+                  value={this.state.subject.description}
                   multiline
-                  rows={10}
+                  rows={4}
                   required
                   fullWidth
                 >
@@ -132,7 +122,7 @@ class AddUnit extends Component {
             </Grid>
             <Button
               className={classes.submit}
-              onClick={() => { this.addUnit(this.state.unit) }}
+              onClick={() => { this.editSubject(this.state.subject) }}
               color="primary"
               variant="contained"
               fullWidth
@@ -146,4 +136,4 @@ class AddUnit extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(AddUnit);
+export default withStyles(styles, { withTheme: true })(EditSubject);

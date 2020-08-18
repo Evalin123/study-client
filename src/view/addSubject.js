@@ -16,7 +16,8 @@ import FormComponent from '../component/form/form';
 
 const styles = (theme) => ({
   root: {
-    height: "100vh",
+    height: "80vh",
+    marginTop: "45px"
   },
   paper: {
     marginTop: "20px",
@@ -32,40 +33,34 @@ const styles = (theme) => ({
     flexDirection: "column",
   },
   submit: {
-    height: "40px",
     marginTop: "24px"
   }
 })
 
-class AddUnit extends Component {
+class AddSubject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      unit: {
-        subjectId: props.match.params.subjectId,
+      subject: {
+        userId: "",
         title: "",
-        subtitle: "",
-        content: "",
+        description: "",
       },
     }
   }
 
   onTitleChange(event) {
-    let unit = this.state.unit;
-    unit.title = event.target.value;
-    this.setState({ unit: unit });
+    let subject = this.state.subject;
+    subject.title = event.target.value;
+    this.setState({ subject: subject });
   }
 
-  onSubtitleChange(event) {
-    let unit = this.state.unit;
-    unit.subtitle = event.target.value;
-    this.setState({ unit: unit });
-  }
-
-  addUnit(unit) {
-    axios.post('http://localhost:5000/study/units/create', unit)
+  addSubject(subject) {
+    axios.post('http://localhost:5000/study/subjects/create', subject)
       .then(response => {
         console.log(response);
+        alert("新增成功");
+        this.props.history.push('/backoffice');
       })
   }
 
@@ -73,28 +68,17 @@ class AddUnit extends Component {
     const { classes } = this.props;
 
     return (
-      <Container maxWidth="lg" component={Card} className={classes.root}>
+      <Container maxWidth="xs" component={Card} className={classes.root}>
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <CreateIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Add Unit
+            Add Subject
           </Typography>
           <form className={classes.form}>
             <Grid container spacing={2}>
-              <Grid container item xs={12} xm={12}>
-                <TextField
-                  name="subjectId"
-                  id="subjectId"
-                  label="Subject ID"
-                  variant="standard"
-                  value={this.state.unit.subjectId}
-                  fullWidth
-                >
-                </TextField>
-              </Grid>
               <FormComponent
                 name={"title"}
                 label={"Title"}
@@ -103,27 +87,19 @@ class AddUnit extends Component {
                 onChange={(event) => { this.onTitleChange(event) }}
               >
               </FormComponent>
-              <FormComponent
-                name={"subtitle"}
-                label={"Subtitle"}
-                type={"text"}
-                variant={"standard"}
-                onChange={(event) => { this.onSubtitleChange(event) }}
-              >
-              </FormComponent>
               <Grid container item xs={12} xm={12}>
                 <TextField
                   onChange={(event) => {
-                    let unit = this.state.unit;
-                    unit.content = event.target.value;
-                    this.setState({ unit: unit });
+                    let subject = this.state.subject;
+                    subject.description = event.target.value;
+                    this.setState({ subject: subject });
                   }}
-                  name="content"
-                  id="content"
-                  label="Content"
+                  name="description"
+                  id="description"
+                  label="Description"
                   variant="outlined"
                   multiline
-                  rows={10}
+                  rows={4}
                   required
                   fullWidth
                 >
@@ -132,7 +108,7 @@ class AddUnit extends Component {
             </Grid>
             <Button
               className={classes.submit}
-              onClick={() => { this.addUnit(this.state.unit) }}
+              onClick={() => { this.addSubject(this.state.subject) }}
               color="primary"
               variant="contained"
               fullWidth
@@ -146,4 +122,4 @@ class AddUnit extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(AddUnit);
+export default withStyles(styles, { withTheme: true })(AddSubject);

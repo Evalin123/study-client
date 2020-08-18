@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
 function isLoggedIn() {
-  if(localStorage.getItem("jwtToken")) {
+  if (localStorage.getItem("jwtToken")) {
     return true;
   }
   return false;
 }
 
-export class ProtectedRoute extends Route {
-  render() {
-    if (!isLoggedIn()) {
-        return <Redirect to='/login' />
-    } else {
-      return super.render();
-    }
-  }
-}
+const PrivateRoute = ({ component, isAuthenticated, ...rest }) => {
+  const routeComponent = (props) => (
+    isLoggedIn()
+      ? React.createElement(component, props)
+      : <Redirect to={{ pathname: '/login' }} />
+  );
+  return <Route {...rest} render={routeComponent} />;
+};
+
+export default PrivateRoute;

@@ -16,6 +16,7 @@ import jwt_decode from 'jwt-decode';
 const styles = (theme) => ({
   root: {
     height: "100vh",
+    left: "(100%-240px)/2"
   },
   paper: {
     marginTop: "20px",

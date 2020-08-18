@@ -18,6 +18,7 @@ const styles = (theme) => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
+    left: "(100%-240px)/2"
   },
   gridList: {
     width: '650px',
@@ -65,9 +66,9 @@ class SubjectList extends Component {
                 title={subject.title}
                 subtitle={<span>{subject.description}</span>}
                 actionIcon={
-                  <IconButton 
+                  <IconButton
                     className={classes.icon}
-                    onClick={() => {this.chooseSubject(subject._id)}}
+                    onClick={() => { this.chooseSubject(subject._id) }}
                   >
                     <InfoIcon />
                   </IconButton>

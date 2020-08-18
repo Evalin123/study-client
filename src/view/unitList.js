@@ -5,19 +5,33 @@ import { TableHead } from '@material-ui/core';
 import { TableRow } from '@material-ui/core';
 import { TableCell } from '@material-ui/core';
 import { TableBody } from '@material-ui/core';
-
+import { Button } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
 import axios from '../utils/axios';
-import UnitComponent from '../componant/list/unitComponent';
+import UnitComponent from '../component/list/unitComponent';
 
 const styles = (theme) => ({
   paper: {
     height: "100vh",
+    left: "240px"
+  },
+
+  headerContainer: {
+    display: "flex",
   },
 
   title: {
-    display: "flex",
-    justifyContent: "center",
+    flex: 4,
+    textAlign: "center"
+  },
+
+  iconContainer: {
+    flex: 1,
+  },
+
+  button: {
+    marginTop: "25px"
   },
 
   table: {
@@ -34,9 +48,12 @@ const styles = (theme) => ({
 class UnitList extends Component {
   constructor(props) {
     super(props)
+    let userString = localStorage.getItem("user");
+    let user = JSON.parse(userString);
     this.state = {
       subject: { title: "", description: "", _id: "" },
       unitList: [],
+      identity: user.identity,
     }
   }
 
@@ -51,11 +68,31 @@ class UnitList extends Component {
       })
   }
 
+  goToAddUnit() {
+    const subjectId = this.state.subject._id;
+    this.props.history.push('/addUnit/' + subjectId);
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.paper}>
-        <h1 className={classes.title}>{this.state.subject.title}</h1>
+        <div className={classes.headerContainer}>
+          <h1 className={classes.title}>{this.state.subject.title}</h1>
+          {this.state.identity == 0 ?
+            <div className={classes.iconContainer}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                startIcon={<AddIcon />}
+                onClick={() => { this.goToAddUnit() }}
+              >
+                Add Unit
+            </Button>
+            </div> : null
+          }
+        </div>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
