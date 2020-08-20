@@ -57,6 +57,7 @@ class Header extends Component {
     super(props);
     let userString = localStorage.getItem("user");
     let user = JSON.parse(userString);
+    console.log(user);
     this.state = {
       open: false,
       identity: user.identity,
@@ -88,10 +89,15 @@ class Header extends Component {
             <Typography className={classes.title} variant="h6">
               Home
             </Typography>
-            <IconButton color="inherit" component="a" href="http://localhost:3000/login">
-              <AccountCircleIcon />
-            </IconButton>
-            <Button color="inherit" component="a">
+            <Button
+              color="inherit"
+              onClick={() => {
+                  localStorage.removeItem("jwtToken");  
+                  localStorage.removeItem("user");
+                  window.location.reload();
+                }
+              }
+            >
               Log Out
             </Button>
           </Toolbar>

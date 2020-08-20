@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
-import { CssBaseline } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
-import { Avatar } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
-import { Card } from '@material-ui/core';
-import { Grid } from '@material-ui/core';
-import { FormControl } from '@material-ui/core';
-import { InputLabel } from '@material-ui/core';
-import { NativeSelect } from '@material-ui/core';
-import { FormHelperText } from '@material-ui/core';
-import { Select } from '@material-ui/core';
-import { MenuItem } from '@material-ui/core';
+import {
+  Container,
+  CssBaseline,
+  Button,
+  TextField,
+  Avatar,
+  Typography,
+  Card,
+  Grid,
+  FormControl,
+  InputLabel,
+  FormHelperText,
+  Select,
+  MenuItem,
+  Link
+} from '@material-ui/core';
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import axios from 'axios';
@@ -162,6 +165,13 @@ class Register extends Component {
             >
               Submit
             </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="http://localhost:3000/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
           </form>
         </div>
       </Container>

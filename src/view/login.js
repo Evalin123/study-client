@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
-import { Grid } from '@material-ui/core';
-import { Card } from '@material-ui/core';
-import { CssBaseline } from '@material-ui/core';
-import { Avatar } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import {
+  Container,
+  Grid,
+  Card,
+  CssBaseline,
+  Avatar,
+  Typography,
+  Button,
+  Link
+} from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import axios from '../utils/axios';
@@ -118,6 +121,13 @@ class Login extends Component {
             >
               Submit
             </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="http://localhost:3000/register" variant="body2">
+                  Create Account
+                </Link>
+              </Grid>
+            </Grid>
           </form>
         </div>
       </Container>

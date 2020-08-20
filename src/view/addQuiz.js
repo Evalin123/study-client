@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
-import { Grid } from '@material-ui/core';
-import { Card } from '@material-ui/core';
-import { CssBaseline } from '@material-ui/core';
-import { Avatar } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import { TextareaAutosize } from '@material-ui/core';
+import {
+  Container,
+  Grid,
+  Card,
+  CssBaseline,
+  Avatar,
+  Typography,
+  TextField,
+  Button,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 
 import axios from '../utils/axios';
@@ -35,37 +41,37 @@ const styles = (theme) => ({
   }
 })
 
-class AddUnit extends Component {
+class AddQuiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      unit: {
+      quiz: {
         subjectId: props.match.params.subjectId,
         title: "",
         subtitle: "",
-        content: "",
+        question: "",
+        answer: "",
       },
     }
   }
 
   onTitleChange(event) {
-    let unit = this.state.unit;
-    unit.title = event.target.value;
-    this.setState({ unit: unit });
+    let quiz = this.state.quiz;
+    quiz.title = event.target.value;
+    this.setState({ quiz: quiz });
   }
 
   onSubtitleChange(event) {
-    let unit = this.state.unit;
-    unit.subtitle = event.target.value;
-    this.setState({ unit: unit });
+    let quiz = this.state.quiz;
+    quiz.subtitle = event.target.value;
+    this.setState({ quiz: quiz });
   }
 
-  addUnit(unit) {
-    axios.post('http://localhost:5000/study/units/create/' + unit.subjectId, unit)
+  addQuiz(quiz) {
+    axios.post('http://localhost:5000/study/quizzes/create/' + quiz.subjectId, quiz)
       .then(response => {
         console.log(response);
         alert("新增成功");
-        this.props.history.push('/backoffice/' + unit.subjectId);
       })
   }
 
@@ -90,7 +96,7 @@ class AddUnit extends Component {
                   id="subjectId"
                   label="Subject ID"
                   variant="standard"
-                  value={this.state.unit.subjectId}
+                  value={this.state.quiz.subjectId}
                   fullWidth
                 >
                 </TextField>
@@ -114,13 +120,13 @@ class AddUnit extends Component {
               <Grid container item xs={12} xm={12}>
                 <TextField
                   onChange={(event) => {
-                    let unit = this.state.unit;
-                    unit.content = event.target.value;
-                    this.setState({ unit: unit });
+                    let quiz = this.state.quiz;
+                    quiz.question = event.target.value;
+                    this.setState({ quiz: quiz });
                   }}
-                  name="content"
-                  id="content"
-                  label="Content"
+                  name="question"
+                  id="question"
+                  label="Question"
                   variant="outlined"
                   multiline
                   rows={10}
@@ -129,10 +135,23 @@ class AddUnit extends Component {
                 >
                 </TextField>
               </Grid>
+              <Grid container item xs={12} xm={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Select</FormLabel>
+                  <RadioGroup aria-label="gender" name="gender1" 
+                  // value={value} onChange={handleChange}
+                  >
+                    <FormControlLabel value="A" control={<Radio color="primary" />} label="A" />
+                    <FormControlLabel value="B" control={<Radio color="primary" />} label="B" />
+                    <FormControlLabel value="C" control={<Radio color="primary" />} label="C" />
+                    <FormControlLabel value="D" control={<Radio color="primary" />} label="D" />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
             </Grid>
             <Button
               className={classes.submit}
-              onClick={() => { this.addUnit(this.state.unit) }}
+              onClick={() => { this.addQuiz(this.state.quiz) }}
               color="primary"
               variant="contained"
               fullWidth
@@ -146,4 +165,4 @@ class AddUnit extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(AddUnit);
+export default withStyles(styles, { withTheme: true })(AddQuiz);

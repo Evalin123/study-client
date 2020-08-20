@@ -23,12 +23,6 @@ export const UserItems = (
       </ListItemIcon>
       <ListItemText primary="About" />
     </ListItem>
-    <ListItem button component="a" href="http://localhost:3000/register">
-      <ListItemIcon>
-        <PersonAddIcon />
-      </ListItemIcon>
-      <ListItemText primary="Regiter" />
-    </ListItem>
   </div>
 );
 

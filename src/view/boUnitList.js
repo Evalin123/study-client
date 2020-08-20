@@ -35,7 +35,6 @@ const styles = (theme) => ({
   },
   
   table: {
-    height: "100vh",
     width: `calc(100% - 480px)`,
     marginLeft: "240px"
   },
