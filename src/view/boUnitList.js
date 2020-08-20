@@ -10,9 +10,10 @@ import { IconButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 import axios from '../utils/axios';
+import subjectList from './subjectList';
 
 const styles = (theme) => ({
   paper: {
@@ -32,7 +33,7 @@ const styles = (theme) => ({
     flex: 1,
     marginTop: "25px"
   },
-
+  
   table: {
     height: "100vh",
     width: `calc(100% - 480px)`,
@@ -40,41 +41,44 @@ const styles = (theme) => ({
   },
 })
 
-class BackOffice extends Component {
+class BOUnitList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      subjectList: [],
+      unitList: [],
+      subject: { title: "", description: "", _id: "" },
     }
   }
 
   componentDidMount() {
-    axios.get("http://localhost:5000/study/subjects/get/all")
+    const subjectId = this.props.match.params.subjectId;
+    axios.get("http://localhost:5000/study/units/subject/" + subjectId)
       .then(response => {
         this.setState({
-          subjectList: response.data,
+          unitList: response.data.data.units,
+          subject: response.data.data.subject
         });
       })
   }
 
-  turnToAddSubject() {
-    this.props.history.push('/addSubject');
+  turnToAddUnit(subjectId) {
+    this.props.history.push('/addUnit/' + subjectId);
   }
 
-  turnToEditSubject(subjectId) {
-    this.props.history.push('/editSubject/' + subjectId);
+  turnToEditUnit(unitId) {
+    this.props.history.push('/editUnit/' + unitId);
   }
 
-  deleteSubject(subjectId) {
-    axios.delete('http://localhost:5000/study/subjects/delete/' + subjectId)
+  deleteUnit(unitId) {
+    axios.delete('http://localhost:5000/study/subjects/delete/' + unitId)
       .then(response => {
         console.log(response.data);
         alert("已刪除");
       })
   }
 
-  turnToUnitList(subjectId) {
-    this.props.history.push('/backoffice/' + subjectId);
+  readUnit(subjectId, unitId) {
+    this.props.history.push('/subject/' + subjectId + '/' + unitId);
   }
 
   render() {
@@ -82,16 +86,16 @@ class BackOffice extends Component {
     return (
       <div className={classes.paper}>
         <div className={classes.headerContainer}>
-          <h1 className={classes.title}>Back Office</h1>
+    <h1 className={classes.title}>{this.state.subject.title}</h1>
           <div className={classes.iconContainer}>
             <Button
               variant="contained"
               color="primary"
               className={classes.button}
               startIcon={<AddIcon />}
-              onClick={() => { this.turnToAddSubject() }}
+              onClick={() => { this.turnToAddUnit(this.state.subject._id) }}
             >
-              Add Subject
+              Add Unit
             </Button>
           </div>
         </div>
@@ -99,35 +103,37 @@ class BackOffice extends Component {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Subject</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Subtitle</TableCell>
               <TableCell>Function</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.subjectList.map((subject, index) => (
+            {this.state.unitList.map((unit, index) => (
               <TableRow
                 key={index}
                 hover
               >
-                <TableCell>{subject._id}</TableCell>
-                <TableCell>{subject.title}</TableCell>
+                <TableCell>{unit._id}</TableCell>
+                <TableCell>{unit.title}</TableCell>
+                <TableCell>{unit.subtitle}</TableCell>
                 <TableCell>
                   <IconButton
-                    onClick={() => { this.turnToUnitList(subject._id) }}
+                    onClick={() => { this.readUnit(unit.subjectId, unit._id) }}
                   >
-                    <ListAltIcon />
+                    <DescriptionIcon />
                   </IconButton >
                 </TableCell>
                 <TableCell>
                   <IconButton
-                    onClick={() => { this.turnToEditSubject(subject._id) }}
+                    onClick={() => { this.turnToEditUnit(unit._id) }}
                   >
                     <EditIcon />
                   </IconButton >
                 </TableCell>
                 <TableCell>
                   <IconButton
-                    onClick={() => { this.deleteSubject(subject._id) }}
+                    onClick={() => { this.deleteUnit(unit._id) }}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -141,4 +147,4 @@ class BackOffice extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(BackOffice);
+export default withStyles(styles, { withTheme: true })(BOUnitList);

@@ -17,43 +17,25 @@ const styles = (theme) => ({
     left: "240px"
   },
 
-  headerContainer: {
-    display: "flex",
-  },
-
   title: {
     flex: 4,
     textAlign: "center"
   },
 
-  iconContainer: {
-    flex: 1,
-  },
-
-  button: {
-    marginTop: "25px"
-  },
-
   table: {
     height: "100vh",
     width: `calc(100% - 480px)`,
+    minWidth: 650,
     marginLeft: "240px"
   },
-
-  submit: {
-    margin: theme.spacing(0, 1),
-  }
 })
 
 class UnitList extends Component {
   constructor(props) {
     super(props)
-    let userString = localStorage.getItem("user");
-    let user = JSON.parse(userString);
     this.state = {
       subject: { title: "", description: "", _id: "" },
       unitList: [],
-      identity: user.identity,
     }
   }
 
@@ -77,22 +59,7 @@ class UnitList extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.paper}>
-        <div className={classes.headerContainer}>
-          <h1 className={classes.title}>{this.state.subject.title}</h1>
-          {this.state.identity == 0 ?
-            <div className={classes.iconContainer}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<AddIcon />}
-                onClick={() => { this.goToAddUnit() }}
-              >
-                Add Unit
-            </Button>
-            </div> : null
-          }
-        </div>
+        <h1 className={classes.title}>{this.state.subject.title}</h1>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>

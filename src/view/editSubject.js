@@ -64,7 +64,7 @@ class EditSubject extends Component {
         console.log(response.data);
         this.setState({ subject: response.data.data });
         alert("已編輯");
-        this.props.history.push('/subject');
+        this.props.history.push('/backoffice');
       })
   }
 

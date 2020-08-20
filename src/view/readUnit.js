@@ -45,8 +45,6 @@ const styles = (theme) => ({
 class ReadUnit extends Component {
   constructor(props) {
     super(props);
-    let userString = localStorage.getItem("user");
-    let user = JSON.parse(userString);
     this.state = {
       unit: {
         _id: "",
@@ -60,7 +58,6 @@ class ReadUnit extends Component {
         title: "",
         description: "",
       },
-      identity: user.identity,
     }
   }
 
@@ -70,19 +67,6 @@ class ReadUnit extends Component {
       .then(response => {
         console.log(response.data);
         this.setState({ unit: response.data.data.unit, subject: response.data.data.subject });
-      })
-  }
-
-  editUnit(id) {
-    this.props.history.push('/editUnit/' + id);
-  }
-
-  deleteUnit(id) {
-    axios.delete("http://localhost:5000/study/units/delete/" + id)
-      .then(response => {
-        console.log(response);
-        alert("已刪除");
-        this.props.history.push('/subject/' + this.state.subject._id);
       })
   }
 
@@ -168,26 +152,6 @@ class ReadUnit extends Component {
                 </TextField>
               </Grid>
             </Grid>
-            {this.state.identity == 0 ?
-              <Grid className={classes.buttonContainer}>
-                <Button
-                  onClick={() => { this.editUnit(this.state.unit._id) }}
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Edit
-                </Button>
-                <Button
-                  onClick={() => { this.deleteUnit(this.state.unit._id) }}
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Delete
-                </Button>
-              </Grid> : null
-            }
           </form>
         </div>
       </Container>

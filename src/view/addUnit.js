@@ -63,9 +63,11 @@ class AddUnit extends Component {
   }
 
   addUnit(unit) {
-    axios.post('http://localhost:5000/study/units/create', unit)
+    axios.post('http://localhost:5000/study/units/create/' + unit.subjectId, unit)
       .then(response => {
         console.log(response);
+        alert("新增成功");
+        this.props.history.push('/backoffice/' + unit.subjectId);
       })
   }
 

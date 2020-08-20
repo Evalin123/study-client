@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import { TableCell, TableRow } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import { CardActionArea } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-
-const styles = (theme) => ({
-  submit: {
-    margin: theme.spacing(0, 1),
-  }
-})
 
 class UnitComponent extends Component {
   constructor(props) {
@@ -17,8 +10,6 @@ class UnitComponent extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <TableRow
         key={this.props.key}
@@ -34,4 +25,4 @@ class UnitComponent extends Component {
   }
 }
 
-export default withRouter(withStyles(styles, { withTheme: true })(UnitComponent));
+export default withRouter((UnitComponent));

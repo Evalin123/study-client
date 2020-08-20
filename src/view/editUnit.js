@@ -69,7 +69,7 @@ class EditUnit extends Component {
       console.log(response.data);
       this.setState({unit: response.data.data});
       alert("已編輯");
-      this.props.history.push('/subject/' + this.state.subject._id + '/' + unit._id);
+      this.props.history.push('/backoffice/' + unit.subjectId);
     })
   }
 

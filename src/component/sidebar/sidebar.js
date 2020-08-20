@@ -7,7 +7,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
+import ExtensionIcon from '@material-ui/icons/Extension';
 
 export const UserItems = (
   <div>
@@ -40,11 +40,16 @@ export const SubjectItems = (
       </ListItemIcon>
       <ListItemText primary="Subject" />
     </ListItem>
-    <ListItem button component="a" href="http://localhost:3000/addSubject">
+  </div>
+);
+
+export const BOItem = (
+  <div>
+    <ListItem button component="a" href="http://localhost:3000/backoffice">
       <ListItemIcon>
-        <LibraryAddIcon />
+        <ExtensionIcon />
       </ListItemIcon>
-      <ListItemText primary="Add Subject" />
+      <ListItemText primary="Back Office" />
     </ListItem>
   </div>
 );

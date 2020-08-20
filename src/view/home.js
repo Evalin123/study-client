@@ -9,7 +9,7 @@ import EditUnit from './editUnit';
 import Subject from './subject';
 import AddSubject from './addSubject';
 import Header from '../component/header/header';
-import BackOffice from './backOffice';
+import BORoute from './backOfficeRoute';
 import EditSubject from './editSubject';
 
 import PrivateRoute from '../utils/protectedRoute';
@@ -32,8 +32,8 @@ export default function Home() {
         <PrivateRoute path="/editUnit/:id" component={EditUnit}></PrivateRoute>
         <PrivateRoute path="/subject" component={Subject}></PrivateRoute>
         <PrivateRoute path="/addSubject" component={AddSubject}></PrivateRoute>
-        <PrivateRoute path="/backoffice" component={BackOffice}></PrivateRoute>
         <PrivateRoute path="/editSubject/:subjectId" component={EditSubject}></PrivateRoute>
+        <PrivateRoute path="/backoffice" component={BORoute}></PrivateRoute>
       </div>
     </div>
   )

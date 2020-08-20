@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
@@ -13,7 +14,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 
-import { UserItems, SubjectItems } from '../sidebar/sidebar';
+import { UserItems, SubjectItems, BOItem } from '../sidebar/sidebar';
 
 const styles = (theme) => ({
   root: {
@@ -54,8 +55,11 @@ const styles = (theme) => ({
 class Header extends Component {
   constructor(props) {
     super(props);
+    let userString = localStorage.getItem("user");
+    let user = JSON.parse(userString);
     this.state = {
-      open: false
+      open: false,
+      identity: user.identity,
     }
   }
 
@@ -87,6 +91,9 @@ class Header extends Component {
             <IconButton color="inherit" component="a" href="http://localhost:3000/login">
               <AccountCircleIcon />
             </IconButton>
+            <Button color="inherit" component="a">
+              Log Out
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -107,6 +114,9 @@ class Header extends Component {
           <List>{UserItems}</List>
           <Divider />
           <List>{SubjectItems}</List>
+          {this.state.identity = 0 ?
+            <List>{BOItem}</List> : null
+          }
         </Drawer>
       </div>
     )
